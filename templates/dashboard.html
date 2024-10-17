@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grades</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f7f6;
+        }
+        .carousel-item {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .semester-btn {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .semester-btn:hover {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .semester-btn.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .course-card {
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+        .course-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .course-item {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            flex-basis: 32%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Grades</a>
+            
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main container -->
+    <div class="container">
+        <!-- Carousel for Years -->
+        <div id="yearCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <!-- Year 1 -->
+                <div class="carousel-item active">
+                    <h3 class="text-primary text-center">Year 1</h3>
+                    <div class="text-center">
+                        <button class="btn btn-outline-primary semester-btn" onclick="loadSemesterData(1, 1)">Semester 1</button>
+                        <button class="btn btn-outline-primary semester-btn" onclick="loadSemesterData(1, 2)">Semester 2</button>
+                        <button class="btn btn-outline-primary semester-btn" onclick="loadSemesterData(1, 3)">Semester 3</button>
+                    </div>
+                    <div id="courses-year-1" class="mt-4 course-list"></div> <!-- Course container for Year 1 -->
+                </div>
+                <!-- Year 2 -->
+                <div class="carousel-item">
+                    <h3 class="text-primary text-center">Year 2</h3>
+                    <div class="text-center">
+                        <button class="btn btn-outline-primary semester-btn" onclick="loadSemesterData(2, 1)">Semester 1</button>
+                        <button class="btn btn-outline-primary semester-btn" onclick="loadSemesterData(2, 2)">Semester 2</button>
+                        <button class="btn btn-outline-primary semester-btn" onclick="loadSemesterData(2, 3)">Semester 3</button>
+                    </div>
+                    <div id="courses-year-2" class="mt-4 course-list"></div> <!-- Course container for Year 2 -->
+                </div>
+                <!-- Year 3 -->
+                <div class="carousel-item">
+                    <h3 class="text-primary text-center">Year 3</h3>
+                    <div class="text-center">
+                        <button class="btn btn-outline-primary semester-btn" onclick="loadSemesterData(3, 1)">Semester 1</button>
+                        <button class="btn btn-outline-primary semester-btn" onclick="loadSemesterData(3, 2)">Semester 2</button>
+                        <button class="btn btn-outline-primary semester-btn" onclick="loadSemesterData(3, 3)">Semester 3</button>
+                    </div>
+                    <div id="courses-year-3" class="mt-4 course-list"></div> <!-- Course container for Year 3 -->
+                </div>
+                <!-- Year 4 -->
+                <div class="carousel-item">
+                    <h3 class="text-primary text-center">Year 4</h3>
+                    <div class="text-center">
+                        <button class="btn btn-outline-primary semester-btn" onclick="loadSemesterData(4, 1)">Semester 1</button>
+                        <button class="btn btn-outline-primary semester-btn" onclick="loadSemesterData(4, 2)">Semester 2</button>
+                        <button class="btn btn-outline-primary semester-btn" onclick="loadSemesterData(4, 3)">Semester 3</button>
+                    </div>
+                    <div id="courses-year-4" class="mt-4 course-list"></div> <!-- Course container for Year 4 -->
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#yearCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#yearCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        <!-- Add Course Form -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Add a Course</h5>
+                <form id="add-course-form">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="course_name" placeholder="Course Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="grade" placeholder="Grade" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" name="nakaz" placeholder="Academic points" required>
+                    </div>
+                    <input type="hidden" id="selected-year" name="year">
+                    <input type="hidden" id="selected-semester" name="semester">
+                    <button type="submit" class="btn btn-primary">Add Course</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Graph Section for Semester Averages -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Semester Averages Chart</h5>
+                <canvas id="semesterChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Graph Section for Year Averages -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">Year Averages Chart</h5>
+                <canvas id="yearChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS and AJAX script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        let semesterChart, yearChart;
+
+        // Function to load semester data dynamically
+        function loadSemesterData(year, semester) {
+            $('#selected-year').val(year);
+            $('#selected-semester').val(semester);
+
+            // Clear any previously loaded courses
+            $(`#courses-year-${year}`).empty();
+
+            // Make an AJAX call to fetch courses for the selected year and semester
+            $.ajax({
+                url: '/get_courses',  // The URL of the Flask route to get courses
+                method: 'GET',
+                data: { 'year': year, 'semester': semester },  // Data to send (selected year and semester)
+                success: function (data) {
+                    if (data.courses.length > 0) {
+                        let courseList = '';
+                        let courseNames = [];
+                        let courseGrades = [];
+                        
+                        data.courses.forEach((course) => {
+                            courseList += `
+                                <div class="course-item">
+                                    <h5 class="course-title">${course.name}</h5>
+                                    <p class="text-muted">Grade: ${course.grade}</p>
+                                    <p class="text-muted">Academic points: ${course.Academic_point}</p>
+                                </div>`;
+                            courseNames.push(course.name);
+                            courseGrades.push(course.grade);
+                        });
+                        $(`#courses-year-${year}`).append(courseList);
+
+                        // Update chart with course names and grades
+                        updateChart(courseNames, courseGrades);
+                    } else {
+                        $(`#courses-year-${year}`).html('<p>No courses found for this semester.</p>');
+                        updateChart([], []);  // Clear the chart if no courses
+                    }
+                }
+            });
+        }
+
+        // Handle the Add Course form submission
+        $('#add-course-form').submit(function (e) {
+            e.preventDefault();
+            const courseData = $(this).serialize();
+
+            $.ajax({
+                url: '/add_course',  // URL of the Flask route to add course
+                method: 'POST',
+                data: courseData,
+                success: function (response) {
+                    alert(response.message);
+                    // Reload the courses for the currently selected year and semester
+                    loadSemesterData($('#selected-year').val(), $('#selected-semester').val());
+                    fetchAndDisplayAverages();  // Fetch averages after adding a course
+                }
+            });
+        });
+
+        // Function to fetch and display averages
+        function fetchAndDisplayAverages() {
+            // Fetch semester averages
+            $.ajax({
+                url: '/get_semester_averages',  // The URL of the Flask route to get semester averages
+                method: 'GET',
+                success: function (data) {
+                    const semesterNames = [];
+                    const semesterPoints = [];
+
+                    // Process each semester
+                    for (const year in data.averages) {
+                        for (const semester in data.averages[year]) {
+                            const avgData = data.averages[year][semester];
+                            semesterNames.push(`${year} - ${semester}`);
+                            semesterPoints.push(avgData.Points / avgData.AP || 0);
+                        }
+                    }
+
+                    // Update semester chart
+                    updateSemesterChart(semesterNames, semesterPoints);
+                },
+                error: function (error) {
+                    console.error("Error fetching semester averages:", error);
+                }
+            });
+
+            // Fetch year averages
+            $.ajax({
+                url: '/get_avg',  // The URL of the Flask route to get yearly averages
+                method: 'GET',
+                success: function (data) {
+                    const yearNames = [];
+                    const yearPoints = data.average_grade;
+
+                    // Prepare data for year chart
+                    for (let year = 1; year <= yearPoints.length; year++) {
+                        yearNames.push(`Year ${year}`);
+                    }
+
+                    // Update year chart
+                    updateYearChart(yearNames, yearPoints);
+                },
+                error: function (error) {
+                    console.error("Error fetching year averages:", error);
+                }
+            });
+        }
+
+        // Function to update the semester averages chart
+        function updateSemesterChart(semesterNames, semesterPoints) {
+            const ctx = document.getElementById('semesterChart').getContext('2d');
+            
+            if (semesterChart) {
+                semesterChart.destroy();
+            }
+
+            semesterChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: semesterNames,
+                    datasets: [{
+                        label: 'Semester Points',
+                        data: semesterPoints,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    responsive: true
+                }
+            });
+        }
+
+        // Function to update the year averages chart
+        function updateYearChart(yearNames, yearPoints) {
+            const ctx = document.getElementById('yearChart').getContext('2d');
+            
+            if (yearChart) {
+                yearChart.destroy();
+            }
+
+            yearChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: yearNames,
+                    datasets: [{
+                        label: 'Yearly Points',
+                        data: yearPoints,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    responsive: true
+                }
+            });
+        }
+
+        // Fetch averages when the page loads
+        $(document).ready(function() {
+            fetchAndDisplayAverages();
+        });
+    </script>
+</body>
+</html>
