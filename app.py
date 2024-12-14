@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['MONGO_URI'] = 'mongodb://localhost:27017/gradeapp'
+app.config['MONGO_URI'] = 'mongodb://mongo:27017/gradeapp' #'mongodb://localhost:27017/gradeapp'
 
 mongo = PyMongo(app)
 bcrypt = Bcrypt(app)
@@ -172,4 +172,4 @@ def logout():
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
-    app.run(host="192.168.56.101", port=8082, debug=True)
+    app.run(host="0.0.0.0", port=8888, debug=True)
