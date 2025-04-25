@@ -2,7 +2,9 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, f
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from flask_bcrypt import Bcrypt
 from flask_pymongo import PyMongo
+from pymongo import MongoClient
 from bson.objectid import ObjectId
+from pymongo.server_api import ServerApi
 import logging
 
 # Configure logging
@@ -10,9 +12,10 @@ logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['MONGO_URI'] = 'mongodb://mongo:27017/gradeapp' #'mongodb://localhost:27017/gradeapp'
-
-mongo = PyMongo(app)
+#app.config['MONGO_URI'] = 'mongodb://mongo:27017/gradeapp' #'mongodb://localhost:27017/gradeapp'
+uri = "mongodb+srv://itamarazran052:Aa123456@cluster0.k51u3am.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+# Create a new client and connect to the server
+mongo = MongoClient(uri, server_api=ServerApi('1'))
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
