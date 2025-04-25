@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
 #app.config['MONGO_URI'] = 'mongodb://mongo:27017/gradeapp' #'mongodb://localhost:27017/gradeapp'
-uri = "mongodb+srv://itamarazran052:Aa123456@cluster0.k51u3am.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+uri = "mongodb+srv://itamarazran052:Mypassword@cluster0.k51u3am.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 # Create a new client and connect to the server
 mongo = MongoClient(uri, server_api=ServerApi('1'))
 bcrypt = Bcrypt(app)
